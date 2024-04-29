@@ -1,11 +1,28 @@
 import express, { Request, Response , Application, NextFunction } from 'express';
 import * as dotenv from "dotenv";
+import helmet from "helmet";
 import cors from "cors";
-import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import router from './routes';
+import bodyParser from 'body-parser';
 
 dotenv.config();
+
+interface UserInterface {
+  id: number;
+  username: string;
+  email: string;
+  phone: string;
+  isAdmin: boolean;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: number | undefined;
+    }
+  }
+}
 
 if (!process.env.PORT) {
   console.log(`No port value specified...`)
@@ -14,10 +31,18 @@ if (!process.env.PORT) {
 const PORT = parseInt(process.env.PORT as string, 10) || 7000;
 
 const app: Application = express();
+;
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
-app.use(cors());
+app.use(helmet());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
 app.use(cookieParser());
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
