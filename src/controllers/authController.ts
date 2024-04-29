@@ -1,9 +1,8 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 import bcrypt from "bcrypt";
-import { PrismaClient } from '@prisma/client';
 import { createUser, findUserByEmail } from '../model/user';
+import { generateToken } from '../utils/auth';
 
-const prisma = new PrismaClient();
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -20,21 +19,28 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
   try {
-    if (!req.body.email || !req.body.password) {
+    if (!email || !password) {
       return res.json({ error: 'Email and password are required' });
     }
-    const user = await findUserByEmail(req.body.email as string);
+    const user = await findUserByEmail(email as string);
     if (!user) {
       return res.json({ error: 'No user found' });
     }
-    const validPassword = await bcrypt.compare(req.body.password.toString(), user.password);
+    const validPassword = await bcrypt.compare(password.toString(), user.password);
     if (!validPassword) {
       return res.json({ error: 'Invalid password' });
     }
-    res.status(200).json({ user });
+    generateToken(res, user.id);
+    res.status(200).json(user);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
+}
+
+export const logout = async (req: Request, res: Response) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: 'Logged out successfully' });
 }
