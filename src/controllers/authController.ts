@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from "bcrypt";
 import { createUser, findUserByEmail } from '../model/user';
-import { generateToken } from '../utils/auth';
+import { clearToken, generateToken } from '../utils/auth';
 
 
 export const register = async (req: Request, res: Response) => {
@@ -41,6 +41,6 @@ export const login = async (req: Request, res: Response) => {
 }
 
 export const logout = async (req: Request, res: Response) => {
-  res.clearCookie("token");
+  clearToken(res);
   res.status(200).json({ message: 'Logged out successfully' });
 }

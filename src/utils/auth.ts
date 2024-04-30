@@ -9,5 +9,13 @@ export const generateToken = (res: Response, userId: number) => {
 
   res.cookie("token", token, {
     httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
   });
 };
+
+export const clearToken = (res: Response) => {
+  res.cookie("token", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  })
+}
