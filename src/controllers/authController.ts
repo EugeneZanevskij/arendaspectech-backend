@@ -32,7 +32,7 @@ export const login = async (req: Request, res: Response) => {
     if (!validPassword) {
       return res.json({ error: 'Invalid password' });
     }
-    generateToken(res, user.id);
+    generateToken(res, { id: user.id, email: user.email, isAdmin: user.isAdmin });
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
