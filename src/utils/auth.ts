@@ -1,9 +1,15 @@
 import jwt from "jsonwebtoken";
 import { Response } from "express";
 
-export const generateToken = (res: Response, userId: number) => {
+interface UserBasicInfo {
+  id: number;
+  email: string;
+  isAdmin: boolean;
+}
+
+export const generateToken = (res: Response, payload: UserBasicInfo) => {
   const jwtSecret = "secret";
-  const token = jwt.sign({ userId }, jwtSecret, {
+  const token = jwt.sign(payload, jwtSecret, {
     expiresIn: "1d",
   });
 
