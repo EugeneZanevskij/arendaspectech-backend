@@ -8,18 +8,16 @@ import bodyParser from 'body-parser';
 
 dotenv.config();
 
-interface UserInterface {
+interface UserBasicInfo {
   id: number;
-  username: string;
   email: string;
-  phone: string;
   isAdmin: boolean;
 }
 
 declare global {
   namespace Express {
     interface Request {
-      userId?: number | undefined;
+      user?: UserBasicInfo | null;
     }
   }
 }
