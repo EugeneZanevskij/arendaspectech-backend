@@ -35,7 +35,7 @@ export async function findUserById(id: number) {
   if (!user) {
     return null;
   }
-  return {id: user.id, username: user.username, email: user.email, phone: user.phone, isAdmin: user.isAdmin};
+  return user;
 }
 
 export async function updateUserPassword(userId: number, newPassword: string) {
@@ -51,6 +51,20 @@ export async function updateUserPassword(userId: number, newPassword: string) {
   return user;
 }
 
+export async function updateUser(userId: number, username: string, email: string, phone: string) {
+  const user = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      username,
+      email,
+      phone,
+    }
+  });
+  return user;  
+}
+
 export async function deleteUser(userId: number) {
   const user = await prisma.user.delete({
     where: {
@@ -58,4 +72,9 @@ export async function deleteUser(userId: number) {
     },
   });
   return user;
+}
+
+export const findUsers = async () => {
+  const users = await prisma.user.findMany();
+  return users;
 }
