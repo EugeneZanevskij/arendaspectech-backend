@@ -5,13 +5,13 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.token;
   if (!token) {
-    return res.json({status: 401, error: 'You are not authenticated' });
+    return res.status(401).json({ error: 'You are not authenticated' });
   }
   
   try {
     const decoded = jwt.verify(token, 'secret') as JwtPayload;
     if (!decoded || !decoded.id || !decoded.email) {
-      return res.json({status: 401, error: 'User not found' });
+      return res.status(401).json({ error: 'User not found' });
     }
 
     const { id, email, isAdmin } = decoded;
@@ -19,7 +19,7 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
     req.user = { id, email, isAdmin };
     next();
   } catch (error) {
-    return res.json({status: 401, error: 'You are not authenticated' });
+    return res.status(401).json({ error: 'You are not authenticated' });
   }
 };
 
@@ -28,6 +28,6 @@ export const isAuthorized = (req: Request, res: Response, next: NextFunction) =>
   if (isAdmin) {
     next();
   } else {
-    return res.json({status: 403, error: 'You are not authorized' });
+    return res.status(403).json({ error: 'You are not authorized' });
   }
 };

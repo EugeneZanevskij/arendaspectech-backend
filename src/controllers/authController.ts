@@ -8,7 +8,7 @@ export const register = async (req: Request, res: Response) => {
   try {
     const user = await findUserByEmail(req.body.email);
     if (user) {
-      return res.json({ error: 'User already exists' });
+      return res.status(409).json({ error: 'User already exists' });
     }
     const newUser = await createUser(req.body.username, req.body.email, req.body.phone, req.body.password);
     res.status(201).json(newUser);
@@ -22,18 +22,18 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
-      return res.json({ error: 'Email and password are required' });
+      return res.status(400).json({ error: 'Email and password are required' });
     }
     const user = await findUserByEmail(email as string);
     if (!user) {
-      return res.json({ error: 'No user found' });
+      return res.status(404).json({ error: 'No user found' });
     }
     const validPassword = await bcrypt.compare(password.toString(), user.password);
     if (!validPassword) {
-      return res.json({ error: 'Invalid password' });
+      return res.status(401).json({ error: 'Invalid password' });
     }
     generateToken(res, { id: user.id, email: user.email, isAdmin: user.isAdmin });
-    res.status(200).json(user);
+    res.status(200).json({ id: user.id, email: user.email });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: 'Internal server error' });
