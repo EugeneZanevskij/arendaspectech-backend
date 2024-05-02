@@ -51,7 +51,7 @@ export async function updateUserPassword(userId: number, newPassword: string) {
   return user;
 }
 
-export async function updateUser(userId: number, username: string, email: string, phone: string) {
+export async function updateUserById(userId: number, username: string, email: string, phone: string) {
   const user = await prisma.user.update({
     where: {
       id: userId,
@@ -65,7 +65,7 @@ export async function updateUser(userId: number, username: string, email: string
   return user;  
 }
 
-export async function deleteUser(userId: number) {
+export async function deleteUserById(userId: number) {
   const user = await prisma.user.delete({
     where: {
       id: userId,
