@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { deleteUserById, findUserById, findUsers, updateUserById } from '../model/user';
+import { findBookingsByUserId } from '../model/booking';
 
 export const getUser = async(req: Request, res: Response) => {
   let userId: number | undefined;
@@ -15,6 +16,25 @@ export const getUser = async(req: Request, res: Response) => {
   try {
     const user = await findUserById(userId!);
     return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+export const getUsersBookings = async(req: Request, res: Response) => {
+  let userId: number | undefined;
+  const isAdmin = req.user?.isAdmin;
+  if (isAdmin) {
+    userId = +req.params.id;
+  } else {
+    userId = req.user?.id;
+  }
+  if (!userId) {
+    res.status(400);
+  }
+  try {
+    const bookings = await findBookingsByUserId(userId!);
+    return res.status(200).json(bookings);
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' });
   }
