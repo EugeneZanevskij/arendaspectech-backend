@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { addEquipmentToServices, deleteEquipmentToServices, getEquipmentToServices, getEquipmentToServicesByEquipmentId } from "../controllers/equipmentToServicesController";
+import { addEquipmentToServices, deleteEquipmentToServices, getEquipmentToServices, getEquipmentToServicesByEquipmentIdAndServiceId, getEquipmentToServicesById } from "../controllers/equipmentToServicesController";
 
 const router = Router();
 
 router.get("/", getEquipmentToServices);
-router.get("/:id", getEquipmentToServicesByEquipmentId);
+router.get("/equipment", getEquipmentToServicesByEquipmentIdAndServiceId);
+router.get("/:id", getEquipmentToServicesById);
 router.post("/", addEquipmentToServices);
 router.delete("/:id", deleteEquipmentToServices);
 
