@@ -7,6 +7,7 @@ const router = Router();
 
 router.get("/", isAuthorized, getUsers);
 router.get("/:id", getUser);
+router.get("/:id/bookings", getUser);
 router.delete("/:id", deleteUser);
 router.put("/:id", updateUser);
 
