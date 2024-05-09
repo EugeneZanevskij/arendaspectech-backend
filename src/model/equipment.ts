@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function createEquipment(name: string, description: string, imagePath: string, price: number, equipmentTypeId: number) {
+export async function createEquipment(name: string, description: string, imagePath: string, price: number, equipmentTypeId: number, relativePath: string) {
   const equipment = await prisma.equipment.create({
     data: {
       name,
@@ -10,12 +10,13 @@ export async function createEquipment(name: string, description: string, imagePa
       imagePath,
       price,
       equipmentTypeId,
+      relativePath
     },
   });
   return equipment;
 }
 
-export async function updateEquipmentById(id: number, name: string, description: string, imagePath: string, price: number, equipmentTypeId: number) {
+export async function updateEquipmentById(id: number, name: string, description: string, imagePath: string, price: number, equipmentTypeId: number, relativePath: string) {
   const equipment = await prisma.equipment.update({
     where: {
       id,
@@ -25,7 +26,8 @@ export async function updateEquipmentById(id: number, name: string, description:
       description,
       imagePath,
       price,
-      equipmentTypeId
+      equipmentTypeId,
+      relativePath
     },
   });
   return equipment;
@@ -45,8 +47,17 @@ export async function findEquipmentById(id: number) {
     where: {
       id,
     },
+    include: { 
+      equipmentToServices: {
+        include: {
+          services: true
+        }
+      }
+    }
   });
-  return equipment;
+  const services = equipment!.equipmentToServices.map((equipmentToService) => equipmentToService.services);
+    const { equipmentToServices, ...equipmentWithoutServices } = equipment!;
+    return { ...equipmentWithoutServices, services };
 };
 
 export async function findEquipments() {
@@ -66,4 +77,3 @@ export async function findEquipments() {
   });
   return result;
 };
-
