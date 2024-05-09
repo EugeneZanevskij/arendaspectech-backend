@@ -7,6 +7,7 @@ import equipmentTypeRouter from './equipmentTypeRouter';
 import equipmentRouter from './equipmentRouter';
 import equipmentToServicesRouter from './equipmentToServicesRouter';
 import statusRouter from './statusRouter';
+import bookingRouter from './bookingRouter';
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use('/admin/equipment-type', isAuthenticated, isAuthorized, equipmentType
 router.use('/admin/equipment', isAuthenticated, isAuthorized, equipmentRouter);
 router.use('/admin/equipment-to-services', isAuthenticated, isAuthorized, equipmentToServicesRouter);
 router.use('/admin/status', isAuthenticated, isAuthorized, statusRouter);
+router.use('/admin/bookings', bookingRouter);
 
 export default router;
