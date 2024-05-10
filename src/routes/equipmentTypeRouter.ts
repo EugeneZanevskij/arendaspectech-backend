@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { addEquipmentType, deleteEquipmentType, getEquipmentTypes, updateEquipmentType } from "../controllers/equipmentTypeController";
+import { addEquipmentType, deleteEquipmentType, getEquipmentType, getEquipmentTypes, updateEquipmentType } from "../controllers/equipmentTypeController";
 
 const router = Router();
 
 router.get("/", getEquipmentTypes);
+router.get("/:id", getEquipmentType);
 router.post("/", addEquipmentType);
 router.put("/:id", updateEquipmentType);
 router.delete("/:id", deleteEquipmentType);
