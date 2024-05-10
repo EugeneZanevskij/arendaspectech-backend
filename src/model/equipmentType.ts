@@ -36,3 +36,12 @@ export async function findEquipmentTypes() {
   const equipmentTypes = await prisma.equipmentType.findMany();
   return equipmentTypes;
 }
+
+export async function findEquipmentType(id: number) {
+  const equipmentType = await prisma.equipmentType.findUnique({
+    where: {
+      id,
+    },
+  });
+  return equipmentType;
+}
