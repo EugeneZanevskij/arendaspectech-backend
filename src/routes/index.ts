@@ -20,6 +20,6 @@ router.use('/admin/equipment-type', isAuthenticated, isAuthorized, equipmentType
 router.use('/admin/equipment', isAuthenticated, isAuthorized, equipmentRouter);
 router.use('/admin/equipment-to-services', isAuthenticated, isAuthorized, equipmentToServicesRouter);
 router.use('/admin/status', isAuthenticated, isAuthorized, statusRouter);
-router.use('/admin/bookings', bookingRouter);
+router.use('/admin/bookings', isAuthenticated, bookingRouter);
 
 export default router;

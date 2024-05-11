@@ -29,7 +29,6 @@ if (!process.env.PORT) {
 const PORT = parseInt(process.env.PORT as string, 10) || 7000;
 
 const app: Application = express();
-;
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
@@ -44,7 +43,6 @@ app.use(cors({
 app.use(cookieParser());
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(error);
   res.status(500).json({ error: 'Internal server error' });
 });
 
