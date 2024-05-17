@@ -15,11 +15,11 @@ router.post('/login', login);
 router.post('/register', register);
 router.post('/logout', logout);
 router.use('/users', isAuthenticated, userRouter);
-router.use('/admin/services', isAuthenticated, isAuthorized, servicesRouter);
-router.use('/admin/equipment-type', isAuthenticated, isAuthorized, equipmentTypeRouter);
-router.use('/admin/equipment', isAuthenticated, isAuthorized, equipmentRouter);
-router.use('/admin/equipment-to-services', isAuthenticated, isAuthorized, equipmentToServicesRouter);
-router.use('/admin/status', isAuthenticated, isAuthorized, statusRouter);
-router.use('/admin/bookings', isAuthenticated, bookingRouter);
+router.use('/admin/services', isAuthenticated, servicesRouter);
+router.use('/admin/equipment-type', equipmentTypeRouter);
+router.use('/admin/equipment', equipmentRouter);
+router.use('/admin/equipment-to-services', isAuthenticated, equipmentToServicesRouter);
+router.use('/admin/status', isAuthenticated, statusRouter);
+router.use('/admin/bookings', bookingRouter);
 
 export default router;
