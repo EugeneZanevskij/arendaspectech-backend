@@ -35,7 +35,7 @@ export const updateBooking = async(req: Request, res: Response) => {
   const { equipmentToServicesId, date, leaseDuration, comment, statusId } = req.body;
   const newDate = new Date(date);
   try {
-    const booking = await updateBookingById(id, equipmentToServicesId, newDate, leaseDuration, comment, statusId);
+    const booking = await updateBookingById(id, equipmentToServicesId, newDate, +leaseDuration, comment, statusId);
     return res.status(200).json(booking);
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' });
