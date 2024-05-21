@@ -45,7 +45,7 @@ export const updateEquipment = async(req: Request, res: Response) => {
   const id = +req.params.id;
   const { name, description, imagePath, price, equipmentTypeId, relativePath } = req.body;
   try {
-    const equipment = await updateEquipmentById(id, name, description, imagePath, price, equipmentTypeId, relativePath);
+    const equipment = await updateEquipmentById(id, name, description, imagePath, +price, equipmentTypeId, relativePath);
     return res.status(200).json(equipment);
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error' });
