@@ -7,9 +7,9 @@ const router = Router();
 router.get("/", getEquipments);
 router.get("/:id", isAuthenticated, getEquipmentById);
 router.get("/:id/equipment-to-services", getEquipmentById);
-router.post("/", isAuthorized, addEquipment);
-router.put("/:id", isAuthorized, updateEquipment);
-router.delete("/:id",isAuthorized, deleteEquipment);
-router.delete("/:id/equipment-to-services",isAuthorized, deleteEquipmentToServices);
+router.post("/", isAuthenticated, isAuthorized, addEquipment);
+router.put("/:id",isAuthenticated, isAuthorized, updateEquipment);
+router.delete("/:id", isAuthenticated, isAuthorized, deleteEquipment);
+router.delete("/:id/equipment-to-services", isAuthenticated, isAuthorized, deleteEquipmentToServices);
 
 export default router;
