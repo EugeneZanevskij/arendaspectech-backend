@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from "bcrypt";
 import { createUser, findUserByEmail } from '../model/user';
-import { clearToken, generateToken } from '../utils/auth';
-
+import { generateToken } from '../utils/auth';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -32,8 +31,8 @@ export const login = async (req: Request, res: Response) => {
     if (!validPassword) {
       return res.status(401).json({ error: 'Invalid password' });
     }
-    generateToken(res, { id: user.id, email: user.email, isAdmin: user.isAdmin });
-    res.status(200).json({ id: user.id, email: user.email });
+    const token = generateToken({ id: user.id, email: user.email, isAdmin: user.isAdmin });
+    res.status(200).json({ id: user.id, email: user.email, token });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -41,6 +40,5 @@ export const login = async (req: Request, res: Response) => {
 }
 
 export const logout = async (req: Request, res: Response) => {
-  clearToken(res);
   res.status(200).json({ message: 'Logged out successfully' });
 }
