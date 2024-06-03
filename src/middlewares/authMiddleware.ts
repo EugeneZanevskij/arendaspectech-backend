@@ -1,13 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-
 export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.cookies.token;
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ error: 'You are not authenticated' });
+  }
+
+  const token = authHeader.split(' ')[1];
   if (!token) {
     return res.status(401).json({ error: 'You are not authenticated' });
   }
-  
+
   try {
     const decoded = jwt.verify(token, 'secret') as JwtPayload;
     if (!decoded || !decoded.id || !decoded.email) {
@@ -15,7 +19,7 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
     }
 
     const { id, email, isAdmin } = decoded;
-    
+
     req.user = { id, email, isAdmin };
     next();
   } catch (error) {
@@ -24,7 +28,7 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
 };
 
 export const isAuthorized = (req: Request, res: Response, next: NextFunction) => {
-  const isAdmin = req.user?.isAdmin
+  const isAdmin = req.user?.isAdmin;
   if (isAdmin) {
     next();
   } else {
