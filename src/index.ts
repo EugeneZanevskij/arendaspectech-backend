@@ -36,7 +36,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
-  origin: ["http://localhost:5173", "arendaspectech.vercel.app"],
+  origin: ["http://localhost:5173", "https://arendaspectech.vercel.app", "https://arendaspectech-git-master-eugenezanevskijs-projects.vercel.app", "https://arendaspectech-eugenezanevskijs-projects.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
